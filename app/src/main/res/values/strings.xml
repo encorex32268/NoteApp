@@ -4,4 +4,8 @@
     <string name="notes_search">Notes Search</string>
     <string name="search_bar_placeholder">Search...</string>
     <string name="notes_add">Notes Add</string>
+    <string name="detail_tile_text_field_title">Title…</string>
+    <string name="detail_tile_text_field_description">Description…</string>
+    <string name="detail_back_content_description">Detail Back</string>
+    <string name="detail_save_content_description">Detail Save</string>
 </resources>

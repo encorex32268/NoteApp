@@ -40,6 +40,7 @@ import com.lihan.noteapp.core.presentation.Route
 import com.lihan.noteapp.featrue.note.presentation.NotesScreenRoot
 import com.lihan.noteapp.featrue.note.presentation.NotesViewModel
 import com.lihan.noteapp.featrue.note.presentation.detail.DetailScreenRoot
+import com.lihan.noteapp.featrue.note.presentation.detail.DetailViewModel
 import com.lihan.noteapp.ui.theme.NoteAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -66,7 +67,13 @@ class MainActivity : ComponentActivity() {
 
                     }
                     composable<Route.NoteDetail> {
-                        DetailScreenRoot()
+                        val viewModel by viewModels<DetailViewModel>()
+                        DetailScreenRoot(
+                            viewModel = viewModel,
+                            onBackClick = {
+                                navController.navigateUp()
+                            }
+                        )
                     }
                 }
 
