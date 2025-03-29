@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class NotesViewModel(
-    private val repository: NotesRepository
+//    private val repository: NotesRepository
 ): ViewModel() {
 
     private val _state = MutableStateFlow(NotesState())
@@ -41,14 +41,14 @@ class NotesViewModel(
 
     private fun loadNotes() {
         viewModelScope.launch {
-            repository.getNotes().collectLatest { notes ->
-                _state.update {
-                    it.copy(
-                        items = notes
-                    )
-                }
-                currentNotes = notes
-            }
+//            repository.getNotes().collectLatest { notes ->
+//                _state.update {
+//                    it.copy(
+//                        items = notes
+//                    )
+//                }
+//                currentNotes = notes
+//            }
         }
     }
 

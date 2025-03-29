@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,6 +32,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
+import com.lihan.noteapp.core.presentation.Route
+import com.lihan.noteapp.featrue.note.presentation.NotesScreenRoot
+import com.lihan.noteapp.featrue.note.presentation.NotesViewModel
+import com.lihan.noteapp.featrue.note.presentation.detail.DetailScreenRoot
 import com.lihan.noteapp.ui.theme.NoteAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,7 +47,28 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
             NoteAppTheme {
+                NavHost(
+                    navController = navController,
+                    startDestination = Route.Notes
+                ){
+                    composable<Route.Notes>{
+                        val viewModel by viewModels<NotesViewModel>()
+                        NotesScreenRoot(
+                            viewModel = viewModel,
+                            navigateToDetail = { noteId ->
+                                navController.navigate(
+                                    Route.NoteDetail(noteId)
+                                )
+                            }
+                        )
+
+                    }
+                    composable<Route.NoteDetail> {
+                        DetailScreenRoot()
+                    }
+                }
 
             }
         }
