@@ -55,9 +55,7 @@ class MainActivity : ComponentActivity() {
                     startDestination = Route.Notes
                 ){
                     composable<Route.Notes>{
-                        val viewModel by viewModels<NotesViewModel>()
                         NotesScreenRoot(
-                            viewModel = viewModel,
                             navigateToDetail = { noteId ->
                                 navController.navigate(
                                     Route.NoteDetail(noteId)
@@ -67,9 +65,7 @@ class MainActivity : ComponentActivity() {
 
                     }
                     composable<Route.NoteDetail> {
-                        val viewModel by viewModels<DetailViewModel>()
                         DetailScreenRoot(
-                            viewModel = viewModel,
                             onBackClick = {
                                 navController.navigateUp()
                             }

@@ -33,12 +33,13 @@ import com.lihan.noteapp.featrue.note.presentation.components.NoteItem
 import com.lihan.noteapp.featrue.note.presentation.components.SearchBar
 import com.lihan.noteapp.featrue.note.presentation.detail.model.noteColors
 import com.lihan.noteapp.ui.theme.NoteAppTheme
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDateTime
 import java.time.ZoneId
 
 @Composable
 fun NotesScreenRoot(
-    viewModel: NotesViewModel,
+    viewModel: NotesViewModel = koinViewModel(),
     navigateToDetail: (Int?) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -93,7 +94,7 @@ private fun NotesScreen(
             SearchBar(
                 text = state.searchText,
                 onValueChange = { text ->
-                    onAction(NotesAction.OnNoteSearch(text))
+                    onAction(NotesAction.OnSearchNote(text))
                 },
                 placeHolder = stringResource(R.string.search_bar_placeholder)
             )
@@ -103,7 +104,10 @@ private fun NotesScreen(
             ){
                 items(state.items){ note ->
                     NoteItem(
-                        note = note
+                        note = note,
+                        onLongClick = {
+                            onAction(NotesAction.OnDeleteNote(note))
+                        }
                     )
                 }
             }

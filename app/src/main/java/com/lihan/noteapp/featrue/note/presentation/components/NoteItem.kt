@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.lihan.noteapp.featrue.note.presentation.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
@@ -26,18 +28,24 @@ import com.lihan.noteapp.featrue.note.presentation.detail.model.noteColors
 import com.lihan.noteapp.ui.theme.NoteAppTheme
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 
 @Composable
 fun NoteItem(
     modifier: Modifier = Modifier,
     note: Note,
-    shape: RoundedCornerShape = RoundedCornerShape(12.dp)
+    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
+    onLongClick: () -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .combinedClickable(
+                onLongClick = onLongClick,
+                onClick = {
+                    //do something
+                }
+            )
             .background(
                 color = Color(note.color),
                 shape = shape
@@ -91,7 +99,8 @@ private fun NoteItemPreview() {
                     description = "werwe132nlrk2r2lkrr3 \n werwe132nlrk2r2lkrr3\nwerwe132nlrk2r2lkrr3",
                     timestamp = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond(),
                     color = noteColors.random().toArgb()
-                )
+                ),
+                onLongClick = {}
             )
         }
     }
