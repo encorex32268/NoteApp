@@ -3,11 +3,9 @@ package com.lihan.noteapp.featrue.note.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lihan.noteapp.featrue.note.domain.model.Note
-import com.lihan.noteapp.featrue.note.domain.repository.NotesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -32,10 +30,20 @@ class NotesViewModel(
 
     fun onAction(action: NotesAction){
         when(action){
-            is NotesAction.OnNoteSearch -> {
+            is NotesAction.OnSearchNote -> {
                 searchNote(action.title)
             }
+            is NotesAction.OnDeleteNote -> {
+               deleteNote(action.id)
+            }
             else -> Unit
+        }
+    }
+
+    private fun deleteNote(id: Int?) {
+        if (id == null) return
+        viewModelScope.launch {
+            //TODO Delete Note
         }
     }
 
