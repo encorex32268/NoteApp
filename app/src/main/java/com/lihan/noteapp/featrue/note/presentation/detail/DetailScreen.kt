@@ -2,6 +2,7 @@
 
 package com.lihan.noteapp.featrue.note.presentation.detail
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +47,15 @@ fun DetailScreenRoot(
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val uiEvent by viewModel.uiEvent.collectAsStateWithLifecycle(DetailUiEvent.Nothing)
+
+    LaunchedEffect(uiEvent){
+        when(uiEvent){
+            DetailUiEvent.OnGoBack -> onBackClick()
+            else -> Unit
+        }
+    }
+
     DetailScreen(
         state = state,
         onAction = { action ->
@@ -62,19 +73,18 @@ fun DetailScreen(
     state: DetailState,
     onAction: (DetailAction) -> Unit
 ){
-    val backgroundColor by remember(state.selectedColor){
-        mutableStateOf(
-            if (state.selectedColor == null){
-                noteColors.random()
-            }else{
-                Color(state.selectedColor)
-            }
-        )
-    }
+    val backgroundColor by animateColorAsState(
+        targetValue =  if (state.selectedColor == null){
+            noteColors.random()
+        }else{
+            Color(state.selectedColor)
+        }
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(backgroundColor)
+            .statusBarsPadding()
     ){
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -116,7 +126,6 @@ fun DetailScreen(
         ContentTextField(
             text = state.title,
             textStyle = MaterialTheme.typography.displayMedium.copy(
-                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.SemiBold
             ),
             placeHolder = stringResource(R.string.detail_tile_text_field_title),
@@ -126,16 +135,15 @@ fun DetailScreen(
             maxLines = 1,
             placeHolderTextStyle = MaterialTheme.typography.displayMedium.copy(
                 fontWeight = FontWeight.SemiBold,
-                color = Color.LightGray.copy(
+                color = Color.Black.copy(
                     alpha = 0.5f
                 )
             )
         )
         Spacer(Modifier.height(4.dp))
         ContentTextField(
-            text = state.title,
+            text = state.description,
             textStyle = MaterialTheme.typography.displaySmall.copy(
-                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.SemiBold
             ),
             placeHolder = stringResource(R.string.detail_tile_text_field_description),
@@ -144,7 +152,7 @@ fun DetailScreen(
             },
             placeHolderTextStyle = MaterialTheme.typography.displaySmall.copy(
                 fontWeight = FontWeight.SemiBold,
-                color = Color.LightGray.copy(
+                color = Color.Black.copy(
                     alpha = 0.5f
                 )
             )

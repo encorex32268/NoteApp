@@ -5,6 +5,8 @@ import java.time.ZoneId
 
 object Timestamp {
     fun getNowTimestamp(): Long {
-        return LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond()
+        return LocalDateTime.now()
+            .atZone(ZoneId.systemDefault())
+            .toInstant().toEpochMilli()
     }
 }

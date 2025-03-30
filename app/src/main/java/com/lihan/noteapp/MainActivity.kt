@@ -42,6 +42,7 @@ import com.lihan.noteapp.featrue.note.presentation.NotesViewModel
 import com.lihan.noteapp.featrue.note.presentation.detail.DetailScreenRoot
 import com.lihan.noteapp.featrue.note.presentation.detail.DetailViewModel
 import com.lihan.noteapp.ui.theme.NoteAppTheme
+import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,28 +50,31 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            NoteAppTheme {
-                NavHost(
-                    navController = navController,
-                    startDestination = Route.Notes
-                ){
-                    composable<Route.Notes>{
-                        NotesScreenRoot(
-                            navigateToDetail = { noteId ->
-                                navController.navigate(
-                                    Route.NoteDetail(noteId)
-                                )
-                            }
-                        )
+            KoinContext {
+                NoteAppTheme {
+                    NavHost(
+                        navController = navController,
+                        startDestination = Route.Notes
+                    ){
+                        composable<Route.Notes>{
+                            NotesScreenRoot(
+                                navigateToDetail = { noteId ->
+                                    navController.navigate(
+                                        Route.NoteDetail(noteId)
+                                    )
+                                }
+                            )
 
+                        }
+                        composable<Route.NoteDetail> {
+                            DetailScreenRoot(
+                                onBackClick = {
+                                    navController.navigateUp()
+                                }
+                            )
+                        }
                     }
-                    composable<Route.NoteDetail> {
-                        DetailScreenRoot(
-                            onBackClick = {
-                                navController.navigateUp()
-                            }
-                        )
-                    }
+
                 }
 
             }

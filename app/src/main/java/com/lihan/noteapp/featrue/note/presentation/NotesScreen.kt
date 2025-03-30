@@ -1,5 +1,6 @@
 package com.lihan.noteapp.featrue.note.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -99,17 +100,23 @@ private fun NotesScreen(
                 placeHolder = stringResource(R.string.search_bar_placeholder)
             )
             Spacer(Modifier.height(8.dp))
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth().weight(1f)
-            ){
-                items(state.items){ note ->
-                    NoteItem(
-                        note = note,
-                        onLongClick = {
-                            onAction(NotesAction.OnDeleteNote(note))
-                        }
-                    )
+            AnimatedVisibility(visible = state.items.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth().weight(1f)
+                ){
+                    items(state.items){ note ->
+                        NoteItem(
+                            note = note,
+                            onLongClick = {
+                                onAction(NotesAction.OnDeleteNote(note))
+                            },
+                            onClick = {
+                                onAction(NotesAction.NavigateToDetail(note.id))
+                            }
+                        )
+                    }
                 }
+
             }
         }
 

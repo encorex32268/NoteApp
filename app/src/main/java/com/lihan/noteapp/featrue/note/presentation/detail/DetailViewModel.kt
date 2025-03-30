@@ -11,11 +11,13 @@ import com.lihan.noteapp.featrue.note.domain.model.Note
 import com.lihan.noteapp.featrue.note.domain.repository.NoteDetailRepository
 import com.lihan.noteapp.featrue.note.presentation.detail.model.noteColors
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -33,6 +35,10 @@ class DetailViewModel(
         SharingStarted.WhileSubscribed(5000),
         _state.value
     )
+
+    private val _uiEvent = Channel<DetailUiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
+
 
     fun onAction(action: DetailAction){
         when(action){
@@ -66,16 +72,20 @@ class DetailViewModel(
 
     private fun getNote() {
         val noteId = savedStateHandle.toRoute<Route.NoteDetail>().noteId
-        viewModelScope.launch {
-            val getNoteJob = async { repository.getNoteById(noteId?:0).firstOrNull() }.await()
-            val title = getNoteJob?.title?:""
-            val description = getNoteJob?.description?:""
-            _state.update {
-                it.copy(
-                    noteId = noteId,
-                    title = title,
-                    description = description
-                )
+        if (noteId != null){
+            viewModelScope.launch {
+                val getNoteJob = async { repository.getNoteById(noteId?:0).firstOrNull() }.await()
+                val title = getNoteJob?.title?:""
+                val description = getNoteJob?.description?:""
+                val colorArgb = getNoteJob?.color
+                _state.update {
+                    it.copy(
+                        noteId = noteId,
+                        title = title,
+                        description = description,
+                        selectedColor = colorArgb
+                    )
+                }
             }
         }
     }
@@ -109,6 +119,7 @@ class DetailViewModel(
                     )
                 }
             }
+            _uiEvent.send(DetailUiEvent.OnGoBack)
         }
     }
 }

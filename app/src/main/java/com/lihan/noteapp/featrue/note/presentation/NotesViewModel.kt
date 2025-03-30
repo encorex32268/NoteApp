@@ -65,7 +65,8 @@ class NotesViewModel(
         if (title.trim().isEmpty()){
             _state.update {
                 it.copy(
-                    items = currentNotes
+                    items = currentNotes,
+                    searchText = title.trim()
                 )
             }
             return

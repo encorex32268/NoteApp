@@ -34,21 +34,20 @@ fun NoteItem(
     modifier: Modifier = Modifier,
     note: Note,
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
-    onLongClick: () -> Unit
+    onLongClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .combinedClickable(
-                onLongClick = onLongClick,
-                onClick = {
-                    //do something
-                }
-            )
             .background(
                 color = Color(note.color),
                 shape = shape
+            )
+            .combinedClickable(
+                onLongClick = onLongClick,
+                onClick = onClick
             )
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -100,7 +99,8 @@ private fun NoteItemPreview() {
                     timestamp = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond(),
                     color = noteColors.random().toArgb()
                 ),
-                onLongClick = {}
+                onLongClick = {},
+                onClick = {}
             )
         }
     }
