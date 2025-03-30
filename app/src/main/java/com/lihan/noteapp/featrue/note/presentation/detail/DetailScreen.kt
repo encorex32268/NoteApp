@@ -75,7 +75,7 @@ fun DetailScreen(
 ){
     val backgroundColor by animateColorAsState(
         targetValue =  if (state.selectedColor == null){
-            noteColors.random()
+            noteColors.first()
         }else{
             Color(state.selectedColor)
         }
@@ -97,7 +97,7 @@ fun DetailScreen(
                 }
             ) {
                 Icon(
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier.size(32.dp),
                     imageVector = NoteAppIcon.Back,
                     contentDescription = stringResource(R.string.detail_back_content_description)
                 )
@@ -108,7 +108,7 @@ fun DetailScreen(
                 }
             ) {
                 Icon(
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier.size(32.dp),
                     imageVector = NoteAppIcon.Done,
                     contentDescription = stringResource(R.string.detail_save_content_description)
                 )

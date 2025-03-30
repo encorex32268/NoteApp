@@ -1,7 +1,7 @@
 package com.lihan.noteapp.core.presentation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
@@ -17,6 +17,6 @@ object NoteAppIcon {
     val Search: ImageVector
         @Composable get() = ImageVector.vectorResource(R.drawable.search)
     val Add = Icons.Default.Add
-    val Back = Icons.AutoMirrored.Default.ArrowBack
+    val Back = Icons.AutoMirrored.Default.KeyboardArrowLeft
     val Done = Icons.Default.Check
 }

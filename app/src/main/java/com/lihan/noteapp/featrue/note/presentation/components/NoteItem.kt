@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.lihan.noteapp.core.domain.timestampToTimeString
@@ -28,6 +29,7 @@ import com.lihan.noteapp.featrue.note.presentation.detail.model.noteColors
 import com.lihan.noteapp.ui.theme.NoteAppTheme
 import java.time.LocalDateTime
 import java.time.ZoneId
+import kotlin.math.max
 
 @Composable
 fun NoteItem(
@@ -57,7 +59,9 @@ fun NoteItem(
             style = MaterialTheme.typography.titleLarge.copy(
                 color = Color.Black
             ),
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.ExtraBold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
 
         Text(
@@ -65,7 +69,9 @@ fun NoteItem(
             style = MaterialTheme.typography.bodyLarge.copy(
                 color = Color.Black
             ),
-            fontWeight = FontWeight.Normal
+            fontWeight = FontWeight.Normal,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis
         )
         Text(
             modifier = Modifier

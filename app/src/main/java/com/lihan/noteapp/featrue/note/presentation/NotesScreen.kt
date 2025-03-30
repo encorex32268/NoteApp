@@ -1,6 +1,7 @@
 package com.lihan.noteapp.featrue.note.presentation
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -77,6 +78,7 @@ private fun NotesScreen(
             }
         }
     ){ innerPadding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -100,11 +102,14 @@ private fun NotesScreen(
                 placeHolder = stringResource(R.string.search_bar_placeholder)
             )
             Spacer(Modifier.height(8.dp))
-            AnimatedVisibility(visible = state.items.isNotEmpty()) {
+            AnimatedVisibility(visible = state.items.isNotEmpty(),modifier = Modifier.animateContentSize()) {
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth().weight(1f)
                 ){
-                    items(state.items){ note ->
+                    items(
+                        state.items,
+                        key = { it.id?:0 }
+                    ){ note ->
                         NoteItem(
                             note = note,
                             onLongClick = {
